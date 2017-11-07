@@ -1,7 +1,7 @@
 #algorithm_note2_UnionFind
 
 ## union fund
-###dynamic connectivity
+### dynamic connectivity
 	problem:
 	- union command:
 	- find connected query of any 2 objects(if there is a path):
@@ -44,7 +44,7 @@
 	}	#test whether the algorithm is working as expected
 	'''
 
-###quick find--using eager approach
+### quick find--using eager approach
 	Data structure:
 	- iterger array id[]
 	- p and q are connected iff(if and only if) they have the same id.
@@ -102,10 +102,82 @@
 	Cost model: number of array accesses(for read or write)
 	It is a quadratic algorithm, do not scale(large calculation)
 
-###Quick find
+### Quick union
+	for large amount of data quick find is too slow
+	Data structure:
+	- Integer array id[] of size N
+	- Interpretation: id[i] is parent(root) of i.
+	
+	Find: check if p and q have the same root
+
+	Union:to merge components containing p and q
+	- set the id of p's root to the id of q's root
+	(change one number and merge 2 group)
+	'''
+	punlic class QuickUnionUF
+	{
+		private int[] id:
+		public QuickUnionUF(int N):
+		{
+			id = new int[N];
+			for (int i = 0; i < N; i++) id[i] = i;
+		}
+		private int root(int i)
+		{
+			while (i != id[i]) i = id[i];
+			return i; /*find the root of i*/
+		}
+		public boolean connected(int p, int q)
+		{
+			return root(p) == root(q);
+		}
+		public void union(int p, int q)
+		{
+			int i = root(p);
+			int j = root(q);
+			id[i] = j;
+		}
+	}
+	'''
+	'''
+	class QuickUnionUF:
+		def QuickUnionUF(N):
+			for (i in range(N)):
+				id[i] = i
+		def root(i):
+			while(i != id[i]):
+				i = id[i]
+				return i
+		def connected(p, q):
+			return root(p)==root(q)
+		def union(p, q):
+			i = root(p);
+			j = root(q);
+			id[i] = j;
+	'''
+	still too slow, trees can get tall, and find are experience
+### Improvement 
+#### weighted quick-union 
+	- base on quick union, avoid tall tree
+	- track the size of each tree(number of objects)
+	- balance by linking root of smaller tree to root of larger tree.(use the root of large tree be the root of small tree)
+	----no one is too far away from root.
+	Data structure:
+	same as quick-union, but maintain extra array sz[i]
+	-count number of objects in the tree rooted at i
+	Find: return root(p) == root(q)
+	Union:
+	- link root of smaller tree to root of larger tree
+	- update the sz[] array
+	'''
+	int i = root(p)
+	int j = root(q)
+	'''
 
 
-##step of developing a usable algorithm
+
+
+## step of developing a usable algorithm
 	- model the problem
 	- find an algrithm to solve
 	- fast enough? fit in memory?
@@ -113,3 +185,4 @@
 	- find a way to address the problem
 	- iterate untill saticfied
 
+ 
